@@ -1,7 +1,7 @@
 import math
 
 # common constants
-GRID_SIZE = 1024
+COARSE_GRID_SIZE = 1024
 PML_SIZE = 12
 C =  2.99792458e+10
 PI = 3.14159265358979
@@ -13,7 +13,14 @@ W0 = 2*PI*C/wavelength
 REL_FIELD = -2*PI*EM*C*C/(E*wavelength)
 dx = wavelength / 32
 dt = dx/(4*C)
-x0 = -GRID_SIZE * dx / 2
+x0 = -COARSE_GRID_SIZE * dx / 2
+
+FINE_GRID_SIZE = 256 # in coarse grid cell units
+DEBUG_PADDING = 2
+AUX_GRID_SIZE = 1
+
+ITERATIONS = 5000
+OUTPUT_PERIOD = 200
 
 # pulse description
 def sgn(x):
