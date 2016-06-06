@@ -45,9 +45,9 @@ class Pml(object):
 
     def compute_sigma(self, i):
         if self.start < self.finish:
-            x = i - self.start
+            x = float(i - self.start) / (self.finish + 1 - self.start)
         else:
-            x = self.start + 1 - i
+            x = float(self.start + 1 - i) / (self.start + 1 - self.finish)
         return self.max_sigma * x ** self.n
 
     def is_inside(self, i):
