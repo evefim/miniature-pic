@@ -3,10 +3,13 @@ import numpy as np
 from defs import C
 
 class Grid(object):
-    def __init__(self, size, dx, dt):
+    def __init__(self, size, x0, dx, dt):
         self.size = size
         self.dx = dx
         self.dt = dt
+        self.x0 = x0
+        self.cdt_by_dx = C * self.dt / self.dx
+
         self.pmls = []
         self.es = np.zeros(size)
         self.bs = np.zeros(size)

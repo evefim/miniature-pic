@@ -1,5 +1,6 @@
 import math
 
+# common constants
 GRID_SIZE = 1024
 PML_SIZE = 12
 C =  2.99792458e+10
@@ -12,10 +13,9 @@ W0 = 2*PI*C/wavelength
 REL_FIELD = -2*PI*EM*C*C/(E*wavelength)
 dx = wavelength / 32
 dt = dx/(4*C)
-# cdt_by_dx = C*dt/dx
+x0 = -GRID_SIZE * dx / 2
 
 # pulse description
-
 def sgn(x):
     return 1 if x > 0 else (-1 if x < 0 else 0)
 
