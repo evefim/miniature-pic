@@ -2,11 +2,12 @@ import math
 
 # common constants
 resolution = 32 # steps per wavelength
-courant = 3 # courant number dx/c dt
-COARSE_GRID_SIZE = 32 * resolution # 32 wavelengths
-FINE_GRID_SIZE = 8*resolution # in coarse grid cell units
-N0 = 20 # number of periods in pulse
-PML_SIZE = 16
+courant = 5 # courant number dx/c dt
+N0 = 40 # number of periods in pulse
+num_wavelengths = int(N0*1.6) # length of box in wavelehgths, rounded to int value
+COARSE_GRID_SIZE = num_wavelengths * resolution # 32 wavelengths
+FINE_GRID_SIZE = COARSE_GRID_SIZE/4 # in coarse grid cell units
+PML_SIZE = 24
 C =  2.99792458e+10
 PI = 3.14159265358979
 EM = 0.910938215e-27
@@ -25,7 +26,8 @@ DEBUG_PADDING = 2
 AUX_GRID_SIZE = 1
 
 OUTPUT_PERIOD = resolution * int(courant)
-ITERATIONS = 40*OUTPUT_PERIOD + 1
+ITERATIONS = 2*N0*OUTPUT_PERIOD + 1
+DELAY = num_wavelengths/2 * wavelength / C
 
 # pulse description
 def sgn(x):
@@ -40,10 +42,8 @@ def f(t):
 def form(t):
     return f(t)*f(t)*f(t*N0)*block(t, 0, N0*PI/W0)
 
-DELAY = 16 * wavelength / C
-
 def shape(r, t):
-    return 2 * REL_FIELD * form(t + r/C - DELAY)
+    return form(t + r/C - DELAY)
 
 def pulse(x, t):
     return shape(abs(x), t)

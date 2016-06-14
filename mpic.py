@@ -93,7 +93,7 @@ def build_plot(coarse_grid, fine_grid, idx):
     plt.legend(loc='best')
     plt.xlabel('x')
     plt.ylabel('Bz')
-    plt.ylim(1, 3e8)
+    plt.ylim(1e-8, 1)
     plt.xlim(xs[0], xs[-1])
     plt.savefig('{0:06d}.png'.format(idx), dpi=120)
 
@@ -201,9 +201,11 @@ def simulate(ref_factor):
 
     stdout.write('iteration ')
     for t in range(defs.ITERATIONS):
-        t_str = '{}'.format(t)
-        stdout.write(t_str)
-        stdout.flush()
+        if t%defs.OUTPUT_PERIOD == 0:
+            t_str = '{}'.format(t/defs.OUTPUT_PERIOD)
+            stdout.write(t_str)
+            stdout.flush()
+            stdout.write('\b' * len(t_str))
 
         cg_skip = lambda i: (
                 i >= fine_grid_idx + defs.DEBUG_PADDING + defs.PML_SIZE and
@@ -236,7 +238,7 @@ def simulate(ref_factor):
         if t % defs.OUTPUT_PERIOD == 0:
             build_plot(coarse_grid, fine_grid, t / defs.OUTPUT_PERIOD)
 
-        stdout.write('\b' * len(t_str))
+#        stdout.write('\b' * len(t_str))
 
     stdout.write('\n')
 
